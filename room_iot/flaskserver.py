@@ -31,7 +31,7 @@ socketio = SocketIO(app, async_mode=async_mode)
 
 def get_station1():
     """ call openweathermap api"""
-    response = urlopen('http://api.openweathermap.org/data/2.5/weather?q=singapore&appid=106079f85a6fc7fd39dacc7e4b1d2666') #put your city ID number at the end
+    response = urlopen('http://api.openweathermap.org/data/2.5/weather?q=singapore&appid=1060acc7e4b1d2666') #put your city ID number at the end
     mydata = response.read()
     print("Weather map: ", mydata)
     return mydata
