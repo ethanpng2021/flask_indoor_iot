@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+  <link href="static/css/jquery.datepick.css" rel="stylesheet">
+  <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+  <script src="static/js/jquery.plugin.min.js"></script>
+  <script src="static/js/modernizr-2.6.2.min.js"></script>
+  <script src="static/js/jquery-1.11.0.min.js"></script>
+  <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+  <!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
+  <script src="static/js/jquery.mousewheel.js"></script>
+  <script src="static/js/jquery.localisation.js"></script>
+  <script src="static/js/jquery.plugin.js"></script>
+  <script src="static/js/jquery.bookmark.js"></script>
+  <script src="static/js/jquery.metadata.js"></script>
+  <script src="static/js/jquery.validate.js"></script>
+  <script src="static/js/jquery.datepick.js"></script>
+  <script src="static/js/jquery.datepick.ext.js"></script>
+  <script src="static/js/jquery.datepick.validation.js"></script>
+  <script src="static/js/jquery.chili-2.2.js"></script>
+  <script src="static/js/demo.js"></script>
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+  <!--<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>-->
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>       
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <!--<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">-->
+  <!--<script src="//code.jquery.com/jquery-1.10.2.js"></script>-->
+  <!--<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>-->
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <script type="text/javascript" charset="utf-8"></script>
+  <style>
+body {
+    font-family:'Montserrat'; font-size:20px;
+}
+hr {
+  border: 1px solid black;
+  
+}
+hr.new1 {
+  border: 1px dotted black;
+}
+
+</style>
+
+<script>
+
+var packeddates;
+
+$(function() {
+        
+  //var selectedFirst = '2020-11-28';
+  
+  //var selectedLast = '2020-11-30';
+  
+  $.datepick.regionalOptions['sg'];
+
+  today = new Date();
+  var selectedFirst = today.getDate();
+  //$('#getSetInlinePicker').datepick({rangeSelect: true, minDate: selectedFirst, maxDate: selectedLast});
+  //$('#getSetInlinePicker').datepicker({defaultDate: selectedFirst});
+  $('#getSetInlinePicker').datepick({dateFormat: 'yyyy-mm-dd', multiSelect: 31, showTrigger: '#calImg'});
+
+
+  $('#getDates').click(function() {
+    var dates = $('#getSetInlinePicker').datepick('getDate');
+    var value = '';
+    for (var i = 0; i < dates.length; i++) {
+      value += (i == 0 ? '' : ',') + $.datepick.formatDate('yyyy-mm-dd', dates[i]);   
+  } 
+    packeddates = $('#getSetValue').val(value || 'none');
+  });
+
+  $('#setDates').click(function() {
+    var dates = $('#getSetValue').val().split(',');
+    $('#getSetInlinePicker').datepick('setDate', dates);
+  
+  });
+
+  $('#clearDate').click(function() {
+    $('#getSetValue').val(null);
+    $('#getSetInlinePicker').datepick('setDate', null);
+  });
+
+});
+
+//function doWork() {
+  // ajax the JSON to the server
+  //$.post("gen_report", packeddates, function(){
+
+  //})};
+</script> 
+
+</head>
+
+<body>
+<div class="container">
+  <br>
+  <h3>Dashboard: Smart Controller for Centralized Air-Conditioning</h3>
+  <!--<div class="btn-group">-->
+  <a href="{{ url_for('index') }}" class="btn btn-dark" type="button">Home</a>
+  <a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>
+  <a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>
+  <a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a>
+  <a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a>
+  <!--</div>-->
+  <hr>
+
+<br>
+<br>
+<br>
+     
+<div>
+  <p><span id="getSetInlinePicker" class="inlinePicker"></span></p>
+  <p>
+    <button type="button" id="getDates">Get</button>
+    <button type="button" id="clearDate">Clear</button>
+    <!--<button onclick="window.location.href = '/uploadprocess';">Back to Upload</button>-->
+  </p>
+    <form action="/check_data_process" method="post">
+    <p><input type="text" id="getSetValue" name="packeddates" size="27" maxlength="300"><p>
+    
+    <input type="submit" value="Proceed">
+    
+    </form>
+  </p>
+</div>
+
+</div>
+</body>
+
+
+</html>

@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+<!--   <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js"></script> -->
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<link rel="stylesheet" href="https://code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+	<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<style>
+		body {
+			font-family:'Montserrat'; font-size:18px;
+		}
+		hr {
+			border: 1px solid black;
+		}
+		hr.new1 {
+			border: 1px dotted black;
+		}
+	</style>
+
+	
+
+</head>
+
+<body>
+	<div class="container">
+		<br>
+		<h3>Dashboard: Smart Controller for Centralized Air-Conditioning</h3>
+		<!--<div class="btn-group">-->
+			<a href="{{ url_for('index') }}" class="btn btn-dark" type="button">Home</a>
+			<!--<a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>-->
+			<!--<a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>-->
+			<!--<a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a>-->
+      <a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a>
+			<!--</div>-->
+			<hr>
+
+			<br>
+
+
+			<canvas id="myChart1" width="640" height="400"></canvas>
+			<canvas id="myChart2" width="640" height="400"></canvas>
+			<canvas id="myChart3" width="640" height="400"></canvas>
+			<canvas id="myChart4" width="640" height="400"></canvas>
+      		<canvas id="myChart5" width="640" height="400"></canvas>
+      		<canvas id="myChart6" width="640" height="400"></canvas>
+      		<canvas id="myChart7" width="640" height="400"></canvas>
+      		<canvas id="myChart8" width="640" height="400"></canvas>
+      		<p id="caption"></p>
+      		<br>
+
+
+
+      	<script>
+          // Global parameters:
+          // do not resize the chart canvas when its container does (keep at 600x400px)
+          //Chart.defaults.global.responsive = false;
+
+          // define the chart temperature data
+          var chartDataTemp = {
+            labels : [{% for item in labels_temperature %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Temperature vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_temperature %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }
+
+            // {
+            //   label: 'Scatter Dataset (Original)',
+            //           // Changes this dataset to become a line
+            //           type: 'scatter',
+            //           data : [{% for item in values2 %}
+            //           {{item}},
+            //           {% endfor %}],
+            //         }
+
+                    ]
+                  };
+
+          // get chart canvas
+          var ctx1 = document.getElementById("myChart1").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart1 = new Chart(ctx1, {
+            type: 'line',
+            data: chartDataTemp,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: '\xB0C'
+                  }
+                } ]
+              }}
+            });
+
+
+		  //Chart.defaults.global.responsive = false;
+          // define the chart humidity data
+          var chartDataHumidity = {
+            labels : [{% for item in labels_humidity %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Humidity vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_humidity %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx2 = document.getElementById("myChart2").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart2 = new Chart(ctx2, {
+            type: 'line',
+            data: chartDataHumidity,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: '%'
+                  }
+                } ]
+              }}
+            });
+
+
+          // define the chart CO2 data
+          var chartDataCO2 = {
+            labels : [{% for item in labels_co2 %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'CO2 vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_co2 %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx3 = document.getElementById("myChart3").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart3 = new Chart(ctx3, {
+            type: 'line',
+            data: chartDataCO2,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'ppm (parts per million)'
+                  }
+                } ]
+              }}
+            });
+
+
+          // define the chart LUX data
+          var chartDataLUX = {
+            labels : [{% for item in labels_lux %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Light Intensity vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_lux %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx4 = document.getElementById("myChart4").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart4 = new Chart(ctx4, {
+            type: 'line',
+            data: chartDataLUX,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'lux'
+                  }
+                } ]
+              }}
+            });
+
+
+          // define the chart OCC data
+          var chartDataOCC = {
+            labels : [{% for item in labels_occ %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Occupancy vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_occ %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx5 = document.getElementById("myChart5").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart5 = new Chart(ctx5, {
+            type: 'line',
+            data: chartDataOCC,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: '1 = Occupied; 0 = Vacant'
+                  }
+                } ]
+              }}
+            });
+
+
+          // define the chart air velocity at diffuser data
+          var chartDataAirVelocity = {
+            labels : [{% for item in labels_airvelocity %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Air Velocity at Diffuser vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_airvelocity %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx6 = document.getElementById("myChart6").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart6 = new Chart(ctx6, {
+            type: 'line',
+            data: chartDataAirVelocity,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'm/s'
+                  }
+                } ]
+              }}
+            });
+
+
+
+          // define the chart air pressure at diffuser data
+          var chartDataAirPressure = {
+            labels : [{% for item in labels_airpressure %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Air Pressure at Diffuser vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_airpressure %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx7 = document.getElementById("myChart7").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart7 = new Chart(ctx7, {
+            type: 'line',
+            data: chartDataAirPressure,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: 'Pa (Pascal)'
+                  }
+                } ]
+              }}
+            });
+
+
+
+          // define the chart outdoor air temperature data
+          var chartDataOAT = {
+            labels : [{% for item in labels_outsideairtemperature %}
+            "{{item}}",
+            {% endfor %}],
+            datasets : [{
+              label: 'Outdoor Air Temperature vs Time',
+              fill: true,
+              lineTension: 0.1,
+              backgroundColor: "rgba(75,192,192,0.4)",
+              borderColor: "rgba(75,192,192,1)",
+              borderCapStyle: 'butt',
+              borderDash: [],
+              borderDashOffset: 0.0,
+              borderJoinStyle: 'miter',
+              pointBorderColor: "rgba(75,192,192,1)",
+              pointBackgroundColor: "#fff",
+              pointBorderWidth: 1,
+              pointHoverRadius: 5,
+              pointHoverBackgroundColor: "rgba(75,192,192,1)",
+              pointHoverBorderColor: "rgba(220,220,220,1)",
+              pointHoverBorderWidth: 2,
+              pointRadius: 1,
+              pointHitRadius: 10,
+              data : [{% for item in values_outsideairtemperature %}
+              {{item}},
+              {% endfor %}],
+
+              spanGaps: false
+
+            }]};
+
+          // get chart canvas
+          var ctx8 = document.getElementById("myChart8").getContext("2d");
+
+          // create the chart using the chart canvas
+          var myChart8 = new Chart(ctx8, {
+            type: 'line',
+            data: chartDataOAT,
+            options: {
+              responsive: true,
+              scales: {
+                xAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: ''
+                  },
+                  ticks: {
+                    major: {
+                      fontStyle: 'bold',
+                      fontColor: '#FF0000'
+                    }
+                  }
+                } ],
+                yAxes: [ {
+                  display: true,
+                  scaleLabel: {
+                    display: true,
+                    labelString: '\xB0C'
+                  }
+                } ]
+              }}
+            });
+
+
+</script>
+
+
+   
+  </div>
+  </body>
+  </html>

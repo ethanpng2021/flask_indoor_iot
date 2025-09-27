@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script> -->
+  <script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>       
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <script type="text/javascript" charset="utf-8"></script>
+  <style>
+body {
+    font-family:'Montserrat'; font-size:14px;
+}
+hr {
+  border: 2px solid black;
+}
+hr.new1 {
+  border: 1px solid black;
+}
+#example1 {
+  border: 1px solid;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+</style>
+</head>
+
+<body>
+<div class="container-fluid">
+  <p id="p1"></p>
+  <h3>Dashboard: Smart Controller for Centralized Air-Conditioning</h3>
+  <a href="{{ url_for('index') }}" class="btn btn-dark" type="button">Home</a>
+  <a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>
+  <a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>
+  <a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a>
+  <a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a>
+  <hr>
+  
+<div id="example1">
+	<!-- <p style="font-size:8pt">openweathermap.org</p> -->
+    <div class="form-group row">
+
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Weather Status</p>
+              <div><p style="background-color:black; color:white; font-size:12pt" id="status"></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature (&deg;C)</p>
+              <div><p style="font-size:12pt" id="otemp"><b></b></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Humidity (%)</p>
+              <div><p style="font-size:12pt" id="ohumidity"></p></div>   
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature MIN (&deg;C)</p>
+              <div><p style="font-size:12pt" id="otempmin"></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature MAX (&deg;C)</p>
+              <div><p style="font-size:12pt" id="otempmax"></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Weather Description</p>
+              <div><p style="font-size:12pt" id="desc"></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Atmospheric Pressure (millibar)</p>
+              <div><p style="font-size:12pt" id="opressure"><b></b></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Visibility (metres)</p>
+              <div><p style="font-size:12pt" id="ovisibility"><b></b></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Wind Speed (kmph)</p>
+              <div><p style="font-size:12pt" id="owindspeed"></p></div>   
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Wind Direction (&deg;)</p>
+              <div><p style="font-size:12pt" id="owinddirection"></p></div>
+          </div>
+          
+          <div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Cloud Coverage (%)</p>
+              <div><p style="font-size:12pt" id="oclouds"></p></div>
+          </div>
+          
+    </div>
+</div>
+      <br>
+      <!--<div style="text-align: center; font-weight:bolder;">--> 
+
+      	<p style="text-align: center; font-weight:bolder;" id="deviceid"></p>
+<div class="container-fluid">
+      <!--</div>-->
+      <div class="form-group row">
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="tem"></p></div>
+              <div id="gaugetem"></div>
+          </div>
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="hum"></p></div>
+              <div id="gaugehum"></div>
+          </div>
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="co2"></p></div>
+              <div id="gaugeco2"></div>
+          </div>
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="lux"></p></div>
+              <div id="gaugelux"></div>
+          </div>
+      <!-- </div>
+      <div class="form-group row"> -->
+          
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="occupancy"></p></div>
+              <div id="gaugeocc"></div>
+          </div>
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="flowrate"></p></div>
+              <div id="gaugefr"></div>
+          </div>
+          <div class="col-md-1">
+              <div style="text-align: center; font-weight:bolder;"><p id="pressure"></p></div>
+              <div id="gaugepr"></div>
+          </div>
+      </div>
+
+     <!--  <div class="form-group row">
+          
+
+      </div> -->
+</div>
+</div>
+
+  <script>
+
+        $(document).ready(function(){
+
+            var socket = io.connect();
+            
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'I\'m connected to Client: '});
+            });
+            socket.on('disconnect', function() {
+                $('#log').append('<br>Disconnected');
+            });
+            socket.on('my sensors', function(msg) {
+            	$("#deviceid").text("Device ID: " + msg.did);
+                $('#tem').text('Temperature');
+                gaugetem.refresh(parseFloat(msg.tem));
+                $('#hum').text('Humidity');
+                gaugehum.refresh(parseFloat(msg.hum));
+                $('#co2').text('Carbon Dioxide');
+                gaugeco2.refresh(parseFloat(msg.co2));
+                $('#lux').text('Illuminance');
+                gaugelux.refresh(parseFloat(msg.lux));
+                $('#occupancy').text('Occupancy: 1 or 0');
+                gaugeocc.refresh(parseFloat(msg.occ));
+                $('#flowrate').text('Flow Rate at Diffuser');
+                gaugefr.refresh(parseFloat(msg.fr));
+                $('#pressure').text('Pressure at Diffuser');
+                gaugepr.refresh(parseFloat(msg.pr));
+            });
+            socket.on('my weather', function(data) {
+                $('#otemp').text(data.otemp);
+                //gaugeotemp.refresh(parseFloat(data.otemp));
+                $('#ohumidity').text(data.ohumidity);
+                //gaugeohumidity.refresh(parseFloat(data.ohumidity));
+                $('#otempmin').text(data.otempmin);
+                //gaugeotempmin.refresh(parseFloat(data.otempmin));
+                $('#otempmax').text(data.otempmax);
+                //gaugeotempmax.refresh(parseFloat(data.otempmax));
+                $('#status').text(data.status);
+                //gaugestatus.refresh(parseFloat(data.status));
+                $('#desc').text(data.desc);
+                //gaugedesc.refresh(parseFloat(data.desc));
+                $('#opressure').text(data.opressure);
+                //gaugeopressure.refresh(parseFloat(data.opressure));
+                $('#ovisibility').text(data.ovisibility);
+                //gaugeovisibility.refresh(parseFloat(data.ovisibility));
+                $('#owindspeed').text(data.owindspeed);
+                //gaugeowindspeed.refresh(parseFloat(data.owindspeed));
+                $('#owinddirection').text(data.owinddirection);
+                //gaugeowinddirection.refresh(parseFloat(data.owinddirection));
+                $('#oclouds').text(data.oclouds);
+                //gaugeoclouds.refresh(parseFloat(data.oclouds));
+            });
+            // ;
+            // socket.on('my resp', function(msg) {
+              
+            //     $('#mess').text('Test Message: ' + msg.data);
+        var gaugetem = new JustGage({
+            id: "gaugetem", // the id of the html element
+            value: 25.0,
+            min: 20.0,
+            max: 27.0,
+            symbol: " \u00B0C",
+            decimals: 1,
+            gaugeWidthScale: 0.3
+        });
+        var gaugehum = new JustGage({
+            id: "gaugehum", // the id of the html element
+            value: 70.0,
+            min: 0.0,
+            max: 100.0,
+            symbol: ' %',
+            decimals: 1,
+            gaugeWidthScale: 0.3
+        });
+        var gaugeco2 = new JustGage({
+            id: "gaugeco2", // the id of the html element
+            value: 400,
+            min: 400,
+            max: 1500,
+            symbol: ' ppm',
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+        var gaugelux = new JustGage({
+            id: "gaugelux", // the id of the html element
+            value: 0,
+            min: 0,
+            max: 1500,
+            symbol: ' lux',
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+        var gaugeocc = new JustGage({
+            id: "gaugeocc", // the id of the html element
+            value: 0,
+            min: 0,
+            max: 1,
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+        var gaugefr = new JustGage({
+            id: "gaugefr", // the id of the html element
+            value: 0.0,
+            min: 0.0,
+            max: 3.3,
+            symbol: ' m/s',
+            decimals: 3,
+            gaugeWidthScale: 0.3
+        });
+        var gaugepr = new JustGage({
+            id: "gaugepr", // the id of the html element
+            value: 0.0,
+            min: 0.0,
+            max: 5.0,
+            symbol: ' Pa',
+            decimals: 3,
+            gaugeWidthScale: 0.3
+        })
+                
+            // })
+
+    // $(document).ready(function() {
+    //   	var socket = io.connect('http://' + document.domain + ':' + location.port);
+    //   	socket.on('connect', function() {
+    //       socket.emit('my event', {data: 'I\'m connected!'});
+    //   	});
+      	
+    //   	socket.on('my response', function(msg) {
+    //       $('#temperature').text("jjskskdl").html();
+    
+
+
+
+    //   	});
+    });
+
+var today = new Date();
+
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+var dateTime = date+' '+time;
+
+document.getElementById("p1").innerHTML = dateTime;
+
+  </script>
+
+</body>
+
+</html>

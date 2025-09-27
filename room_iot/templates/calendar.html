@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html><head>
+<!--<style>
+.demoLabel.wide { width: 20em; }
+</style> -->
+<meta http-equiv="Content-Type" content="text/html;charset=utf-8">
+<title>BCA Chiller Portal: Select Dates</title>
+<link href="static/css/jquery.datepick.css" rel="stylesheet">
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+<script src="static/js/jquery.plugin.min.js"></script>
+<script src="static/js/modernizr-2.6.2.min.js"></script>
+<script src="static/js/jquery-1.11.0.min.js"></script>
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
+<script src="static/js/jquery.mousewheel.js"></script>
+<script src="static/js/jquery.localisation.js"></script>
+<script src="static/js/jquery.plugin.js"></script>
+<script src="static/js/jquery.bookmark.js"></script>
+<script src="static/js/jquery.metadata.js"></script>
+<script src="static/js/jquery.validate.js"></script>
+<script src="static/js/jquery.datepick.js"></script>
+<script src="static/js/jquery.datepick.ext.js"></script>
+<script src="static/js/jquery.datepick.validation.js"></script>
+<script src="static/js/jquery.chili-2.2.js"></script>
+<script src="static/js/demo.js"></script>
+<!--<script src="https://code.jquery.com/jquery-1.11.3.min.js"></script> -->
+<script>
+
+var packeddates;
+
+$(function() {
+				
+	var selectedFirst = '{{dateRange[0]}}';
+	
+	var selectedLast = '{{dateRange[-1]}}';
+	
+	$.datepick.regionalOptions['sg'];
+	
+	//$('#getSetInlinePicker').datepick({rangeSelect: true, minDate: selectedFirst, maxDate: selectedLast});
+	//$('#getSetInlinePicker').datepicker({defaultDate: selectedFirst});
+	$('#getSetInlinePicker').datepick({defaultDate: selectedFirst, dateFormat: 'yyyy-mm-dd', multiSelect: 31, showTrigger: '#calImg'});
+
+
+	$('#getDates').click(function() {
+		var dates = $('#getSetInlinePicker').datepick('getDate');
+		var value = '';
+		for (var i = 0; i < dates.length; i++) {
+			value += (i == 0 ? '' : ',') + $.datepick.formatDate('yyyy-mm-dd', dates[i]);		
+	}	
+		packeddates = $('#getSetValue').val(value || 'none');
+	});
+
+	$('#setDates').click(function() {
+		var dates = $('#getSetValue').val().split(',');
+		$('#getSetInlinePicker').datepick('setDate', dates);
+	
+	});
+
+	$('#clearDate').click(function() {
+		$('#getSetValue').val(null);
+		$('#getSetInlinePicker').datepick('setDate', null);
+	});
+
+});
+
+//function doWork() {
+	// ajax the JSON to the server
+	//$.post("gen_report", packeddates, function(){
+
+	//})};
+</script> 
+<style>
+#wb_Text1
+{
+   background-color: transparent;
+   background-image: none;
+   border: 0px solid #C0C0C0;
+   padding: 0;
+   margin: 0;
+   text-align: left;
+}
+#wb_Text1 div
+{
+   text-align: left;
+}
+#wb_Heading1
+{
+   background-color: #FFFFFF;
+   background-image: none;
+   border: 0px solid #000000;
+   margin: 0;
+   padding: 0px 0px 0px 0px;
+}
+#Heading1
+{
+   color: #000000;
+   font-family: "Trebuchet MS";
+   font-weight: normal;
+   font-size: 24px;
+   margin: 0;
+   text-align: left;
+}
+</style>
+</head>
+<body>
+<div id="wb_Heading1" style="position:absolute; left:507px; top:208px; width:261px; height:36px; z-index:3;">
+<h1 id="Heading1">Search Date/Dates</h1></div>
+
+<div style="position:absolute;left:517px;top:264px;width:261px;height:16px;z-index:1;">
+  <p><span id="getSetInlinePicker" class="inlinePicker"></span></p>
+
+  <p>
+    <button type="button" id="getDates">Get</button>
+    <button type="button" id="clearDate">Clear</button>
+    <button onclick="window.location.href = '/uploadprocess';">Back to Upload</button>
+  </p>
+    <form action="/gen_report" method="post">
+    <input type="submit" value="Proceed">
+    <p><input type="text" id="getSetValue" name="packeddates" size="27" maxlength="300"><p>
+    </form>
+  </p>
+</div>
+
+<!--<dl>
+  <dt>Github</dt>
+  <dd><a href="https://github.com/kbwood/datepick">https://github.com/kbwood/datepick</a></dd>
+  <dt>Bower</dt>
+  <dd>kbw-datepick</dd>
+</dl> -->
+</body>
+</html>

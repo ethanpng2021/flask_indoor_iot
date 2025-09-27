@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <title>Working with Flask and SocketIO</title>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
+  <script type="text/javascript" charset="utf-8"></script>
+</head>
+
+<body>
+  <!--<div><p id="tem"></p></div>
+  <div><p id="hum"></p></div>
+  <div><p id="co2"></p></div>
+  <div><p id="lux"></p></div>-->
+  <div><p id="mess"></p></div>
+  <script>
+
+        $(document).ready(function(){
+
+            var socket = io.connect();
+
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'I\'m connected to Client: '});
+            });
+            socket.on('disconnect', function() {
+                $('#log').append('<br>Disconnected');
+            });
+            //socket.on('my response', function(msg) {
+            //    $('#tem').text('Temperature: ' + msg.tem);
+            //    $('#hum').text('Humidity: ' + msg.hum);
+            //    $('#co2').text('Carbon Dioxide: ' + msg.co2);
+            //    $('#lux').text('Illuminance: ' + msg.lux);
+            //    $('#mess').text('Test Message: ' + msg.data);
+            //})
+            // ;
+            socket.on('my resp', function(msg) {
+              
+                 $('#mess').text('Test Message: ' + msg.data);
+    
+             })
+
+    // $(document).ready(function() {
+    //   	var socket = io.connect('http://' + document.domain + ':' + location.port);
+    //   	socket.on('connect', function() {
+    //       socket.emit('my event', {data: 'I\'m connected!'});
+    //   	});
+      	
+    //   	socket.on('my response', function(msg) {
+    //       $('#temperature').text("jjskskdl").html();
+    //   	});
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+  <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>       
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+  <script src="//code.jquery.com/jquery-1.10.2.js"></script>
+  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+  <script type="text/javascript" charset="utf-8"></script>
+  <style>
+body {
+    font-family:'Montserrat'; font-size:12px;
+}
+hr {
+  border: 1px solid black;
+  
+}
+hr.new1 {
+  border: 1px dotted black;
+}
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 50%;
+  height: 15px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;}
+</style>
+</head>
+
+<body>
+<div class="container">
+  <br>
+  <h3>Dashboard: Smart Controller for Centralized Air-Conditioning</h3>
+  <!--<div class="btn-group">-->
+  <a href="{{ url_for('index') }}" class="btn btn-dark" type="button">Home</a>
+  <a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>
+  <a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>
+  <a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a>
+  <a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a>
+  <!--</div>-->
+  <hr>
+  <br>
+  <br>
+  <br>
+  <h3>Slide to Set Your Comfort Level</h3>
+<br>
+<div class="slidecontainer">
+  <input type="range" min="-3" max="3" value="0" class="slider" id="myRange">
+  <br><br>
+  <p style="font-size:18px;">Value: <span id="demo"></span></p>
+</div>
+
+<script>
+var slider = document.getElementById("myRange");
+var output = document.getElementById("demo");
+output.innerHTML = slider.value;
+
+slider.oninput = function() {
+  output.innerHTML = this.value;
+}
+</script>
+<br>
+<p>Hot=3, Warm=2, Slightly Warm=1, "I am fine!"=0, Slightly Cool=-1, Cool=-2, Cold=-3</p>
+  <!-- <form>
+<button type="button" class="btn btn-danger">Hot</button>
+<button type="button" class="btn btn-secondary">Warm</button>
+<button type="button" class="btn btn-info">Slightly Warm</button>
+<button type="button" class="btn btn-success">I am OK!</button>
+<button type="button" class="btn btn-warning">Slightly Cool</button>
+<button type="button" class="btn btn-primary">Cool</button>
+<button type="button" class="btn btn-dark">Cold</button>
+  </form> -->
+</div>
+</body>
+
+</html>

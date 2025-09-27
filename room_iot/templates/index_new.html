@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<link href="static/css/jquery.datepick.css" rel="stylesheet">
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script> -->
+	<script src="static/js/jquery.plugin.min.js"></script>
+	<script src="static/js/modernizr-2.6.2.min.js"></script>
+	<script src="static/js/jquery-1.11.0.min.js"></script>
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script> -->
+	<!--<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.10.3/jquery-ui.min.js"></script> -->
+	<script src="static/js/jquery.mousewheel.js"></script>
+	<script src="static/js/jquery.localisation.js"></script>
+	<script src="static/js/jquery.plugin.js"></script>
+	<script src="static/js/jquery.bookmark.js"></script>
+	<script src="static/js/jquery.metadata.js"></script>
+	<script src="static/js/jquery.validate.js"></script>
+	<script src="static/js/jquery.datepick.js"></script>
+	<script src="static/js/jquery.datepick.ext.js"></script>
+	<script src="static/js/jquery.datepick.validation.js"></script>
+	<script src="static/js/jquery.chili-2.2.js"></script>
+	<script src="static/js/demo.js"></script>
+	<!-- <script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script> -->
+	<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script> -->
+	<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+	<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>       
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<!-- <script src="//ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<!-- <script src="//code.jquery.com/jquery-1.10.2.js"></script> -->
+	<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+	<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+	<script type="text/javascript" charset="utf-8"></script>
+	<style>
+		body {
+			margin: 0;
+			font-size: 14px;
+			font-family: 'Montserrat';
+
+		}
+
+		.header {
+			background-color: #f1f1f1;
+			padding: 30px;
+			text-align: center;
+		}
+
+		#navbar {
+			overflow: hidden;
+			background-color: #333;
+		}
+
+		#navbar a {
+			float: left;
+			display: block;
+			color: #f2f2f2;
+			text-align: center;
+			padding: 14px 16px;
+			text-decoration: none;
+			font-size: 17px;
+		}
+
+		#navbar a:hover {
+			background-color: #ddd;
+			color: black;
+		}
+
+		#navbar a.active {
+			background-color: #444459;
+			color: white;
+		}
+
+		.topnav-right {
+			float: right;
+			padding-right: 14px;
+		}
+
+		.content {
+			padding: 16px;
+		}
+
+		.sticky {
+			position: fixed;
+			top: 0;
+			width: 100%;
+		}
+
+		.sticky + .content {
+			padding-top: 60px;
+		}
+
+		table.roundedCorners { 
+			border-collapse: separate !important;
+			border: 5px solid black;
+			border-radius: 20px; 
+			border-spacing: 0;
+		}
+		table.roundedCorners td, 
+		table.roundedCorners th { 
+			border-bottom: 5px solid black;
+			padding: 10px; 
+		}
+		table.roundedCorners tr:last-child > td {
+			border-bottom: none;
+		}
+		hr {
+			border: 2px solid black;
+		}
+		hr.new1 {
+			border: 1px solid black;
+		}
+		#example1 {
+			border: 1px solid;
+			padding: 6px;
+			border-radius: 10px;
+		}
+		.slidecontainer {
+			width: 100%;
+		}
+
+		.slider {
+			-webkit-appearance: none;
+			width: 50%;
+			height: 15px;
+			border-radius: 5px;
+			background: #d3d3d3;
+			outline: none;
+			opacity: 0.7;
+			-webkit-transition: .2s;
+			transition: opacity .2s;
+		}
+
+		.slider:hover {
+			opacity: 1;
+		}
+
+		.slider::-webkit-slider-thumb {
+			-webkit-appearance: none;
+			appearance: none;
+			width: 35px;
+			height: 35px;
+			border-radius: 50%;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+
+		.slider::-moz-range-thumb {
+			width: 35px;
+			height: 35px;
+			border-radius: 50%;
+			background: #4CAF50;
+			cursor: pointer;
+		}
+		.grid-container {
+			display: grid;
+			grid-template-columns: auto auto auto;
+			background-color: #2196F3;
+			padding: 10px;
+		}
+		.grid-item {
+			background-color: rgba(255, 255, 255, 0.8);
+			border: 0px solid rgba(0, 0, 0, 0.8);
+			padding: 10px;
+			font-size: 14px;
+			text-align: left;
+		}
+		
+		#Image1
+{
+   border: 0px solid #000000;
+   padding: 0px 0px 0px 0px;
+   margin: 0;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+}
+#Editbox1
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox1:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox2
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox2:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox3
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox3:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox4
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox4:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox5
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 19px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox5:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox6
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox6:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox7
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox7:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox8
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox8:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox9
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 19px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox9:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox10
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox10:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox11
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox11:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox12
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox12:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox13
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox13:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox14
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox14:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#wb_Heading1
+{
+   background-color: #FFFFFF;
+   background-image: none;
+   border: 0px solid #000000;
+   margin: 0;
+   padding: 0px 0px 0px 0px;
+}
+#Heading1
+{
+   color: #000000;
+   font-family: Montserrat;
+   font-weight: normal;
+   font-size: 22px;
+   margin: 0;
+   text-align: center;
+}
+#wb_Heading2
+{
+   background-color: #FFFFFF;
+   background-image: none;
+   border: 0px solid #000000;
+   margin: 0;
+   padding: 0px 0px 0px 0px;
+}
+#Heading2
+{
+   color: #000000;
+   font-family: Montserrat;
+   font-weight: normal;
+   font-size: 22px;
+   margin: 0;
+   text-align: left;
+}
+#Editbox15
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox15:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+	</style>
+</head>
+
+<body>
+	<div class="content">
+		<div class="topnav-right">
+			{# One-time system messages called Flash messages #}
+			{% block flash_messages %}
+			{%- with messages = get_flashed_messages(with_categories=true) -%}
+			{% if messages %}
+			{% for category, message in messages %}
+			{% if category=='error' %}
+			{% set category='danger' %}
+			{% endif %}
+			{{ message|safe }}
+			{% endfor %}
+			{% endif %}
+			{%- endwith %}
+			{% endblock %}
+		</div>
+		
+		<h3>Dashboard: Smart Controller for Centralized Air-Conditioning</h3>
+		<a href="{{ url_for('index') }}" class="btn btn-success" type="button">Home</a>
+		<!-- <a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>
+		<a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>
+		<a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a> -->
+		<!--<a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a> -->
+
+		<hr>
+
+		
+		<!-- <p style="font-size:8pt">openweathermap.org</p> -->
+		<div class="form-group row">
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Weather Status</p>
+				<div><p style="background-color:black; color:white; font-size:12pt" id="status"></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Weather Description</p>
+				<div><p style="font-size:12pt" id="desc"></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature (&deg;C)</p>
+				<div><p style="font-size:12pt" id="otemp"><b></b></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Humidity (%)</p>
+				<div><p style="font-size:12pt" id="ohumidity"></p></div>   
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature MIN (&deg;C)</p>
+				<div><p style="font-size:12pt" id="otempmin"></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Outside Temperature MAX (&deg;C)</p>
+				<div><p style="font-size:12pt" id="otempmax"></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Atmospheric Pressure (millibar)</p>
+				<div><p style="font-size:12pt" id="opressure"><b></b></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Visibility (metres)</p>
+				<div><p style="font-size:12pt" id="ovisibility"><b></b></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Wind Speed (kmph)</p>
+				<div><p style="font-size:12pt" id="owindspeed"></p></div>   
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Wind Direction (&deg;)</p>
+				<div><p style="font-size:12pt" id="owinddirection"></p></div>
+			</div>
+
+			<div class="col-md-1"><p style="font-weight:bolder; font-size:10pt">Cloud Coverage (%)</p>
+				<div><p style="font-size:12pt" id="oclouds"></p></div>
+			</div>
+
+			<div class="col-md-1"><p>Date and Time</p><p id="p1"></p></div>
+
+		</div>
+		<hr class="new1">
+		
+		<!--<div style="text-align: center; font-weight:bolder;">--> 
+
+			<p style="text-align: center; font-weight:bolder;" id="deviceid"></p>
+
+
+			<div class="grid-container">
+
+				<div class="grid-item">
+
+					<div class="row">
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="tem"></p></div>
+							<div id="gaugetem"></div>
+						</div>
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="hum"></p></div>
+							<div id="gaugehum"></div>
+						</div>
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="co2"></p></div>
+							<div id="gaugeco2"></div>
+						</div>
+						
+					</div>
+
+					<div class="row">
+
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="lux"></p></div>
+							<div id="gaugelux"></div>
+						</div>  
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="occupancy"></p></div>
+							<div id="gaugeocc"></div>
+						</div>
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="flowrate"></p></div>
+							<div id="gaugefr"></div>
+						</div>
+					
+
+					</div>
+
+					<div class="row">
+
+						<div class="column">
+							<div style="text-align: center; font-weight:bolder;"><p id="pressure"></p></div>
+							<div id="gaugepr"></div>
+						</div>
+				
+
+					</div>
+
+				</div>
+
+				<div class="grid-item">
+
+
+
+					<div class="row">
+						<div class="column">
+						<h5>Slide to set your desired temperature</h5>
+						<br>
+						<div class="slidecontainer">
+							<input type="range" min="18" max="27" value="25" class="slider" id="myRange">
+							<br><br>
+							<p style="font-size:18px;">Value: <span id="demo"></span>&deg;C</p>
+						</div>
+					</div>
+					</div>
+
+	            <br><br>
+
+			    <div class="row">
+                    <div class="column">
+			    	<h5>How do you feel about the current temperature?</h5>
+			    	<br>
+			    	<div class="slidecontainer">
+			    		<input type="range" min="-3" max="3" value="0" class="slider" id="myRangeC">
+			    		<br><br>
+			    		<p style="font-size:18px;">Value: <span id="demoC"></span></p>
+
+			    		<p><b>Hot</b>=3 | <b>Warm</b>=2 | <b>Slightly Warm</b>=1 | <b>"I am fine!"</b>=0 | <b>Slightly Cool</b>=-1 | <b>Cool</b>=-2 | <b>Cold</b>=-3</p>
+			    	</div>
+                    </div>
+			    </div>
+
+					<!-- <div class="col-1">
+					</div> -->
+				</div>
+				
+
+				<div class="grid-item">
+			        <div class="column">
+						<h4>Past Sensor Data</h4>
+						<p><span id="getSetInlinePicker" class="inlinePicker"></span></p>
+						<p>
+							<button type="button" id="getDates">Get</button>
+							<button type="button" id="clearDate">Clear</button>
+						</p>
+						<form action="/check_data_process" method="post">
+							<p><input type="text" id="getSetValue" name="packeddates" size="27" maxlength="300"></p>
+
+							<p><input type="submit" value="Proceed"></p>
+
+						</form>
+					    
+					</div>
+			    </div>
+
+		</div>
+         
+        <div class="container">
+	  
+  <div class="col-md-6 text-center"> 
+<div style="position:absolute;left:244px;top:18px;font-size:18px;width:389px;height:42px;"><h4><b>AHU and CHILLER</b></h4></div>
+
+<div id="wb_Image1" style="position:absolute;left:76px;top:228px;width:863px;height:485px;z-index:0;">
+<img src="static/img/chiller.jpg" id="Image1" alt=""></div>
+<!-- <div style="position:absolute;left:380px;top:420px;width:108px;height:28px;"><p style="font-size:12pt" id="sat"></p></div> -->
+<p id="cw_flow" style="position:absolute;left:380px;top:521px;width:158px;height:28px;z-index:1;"></p>
+<p id="chwrt" style="position:absolute;left:555px;top:476px;width:95px;height:28px;z-index:2;"></p>
+<p id="chwst" style="position:absolute;left:690px;top:478px;width:92px;height:28px;z-index:3;"></p>
+<p id="chw_flow" style="position:absolute;left:349px;top:716px;width:158px;height:28px;z-index:4;"></p>
+<p id="ch_pwr" style="position:absolute;left:327px;top:115px;width:178px;height:28px;z-index:5;"></p>
+<p id="ahu_pwr" style="position:absolute;left:522px;top:115px;width:178px;height:28px;z-index:5;"></p>
+<p id="cooling_load" style="position:absolute;left:127px;top:115px;width:198px;height:28px;z-index:5;"></p>
+<p id="cwrt" style="position:absolute;left:559px;top:522px;width:85px;height:28px;z-index:6;"></p>
+<p id="cwp" style="position:absolute;left:55px;top:566px;width:128px;height:28px;z-index:7;"></p>
+<p id="chwp" style="position:absolute;left:50px;top:612px;width:148px;height:28px;z-index:8;"></p>
+<p id="ct_pwr" style="position:absolute;left:260px;top:257px;width:128px;height:28px;z-index:9;"></p>
+<p id="cwst" style="position:absolute;left:258px;top:521px;width:128px;height:28px;z-index:10;"></p>
+<p id="fresht" style="position:absolute;left:440px;top:332px;width:128px;height:28px;z-index:11;"></p>
+<p id="rat" style="position:absolute;left:816px;top:241px;width:128px;height:28px;z-index:12;"></p>
+<p id="sat" style="position:absolute;left:837px;top:358px;width:128px;height:28px;z-index:13;"></p>
+<p id="raco2" style="position:absolute;left:725px;top:328px;width:148px;height:28px;z-index:14;"></p>
+<div id="wb_Heading1" style="position:absolute;left:520px;top:185px;width:342px;height:41px;text-align:center;z-index:15;">
+<h5 id="Heading1">Level B1, Section 2</h5></div>
+<div id="wb_Heading2" style="position:absolute;left:84px;top:185px;width:409px;height:42px;z-index:16;">
+<h5 id="Heading2">Block S1, Cooling Tower 1</h5></div>
+<p id="sap" style="position:absolute;left:705px;top:434px;width:126px;height:28px;z-index:17;"></p>
+<p style="position:absolute; left:24px; top:778px; width:835px; height:28px; z-index:17;"></p>  
+</div>
+</div>
+        
+        
+
+	</div>
+
+ 
+	
+		<!-- <div class="row">
+
+			<div class="col-1">
+				<div style="text-align: center; font-weight:bolder;"><p id="lux"></p></div>
+				<div id="gaugelux"></div>
+			</div>  
+			<div class="col-1">
+				<div style="text-align: center; font-weight:bolder;"><p id="occupancy"></p></div>
+				<div id="gaugeocc"></div>
+			</div>
+			<div class="col-1">
+				<div style="text-align: center; font-weight:bolder;"><p id="flowrate"></p></div>
+				<div id="gaugefr"></div>
+			</div>
+			<div class="col-1">
+
+			</div>
+			
+		</div> -->
+		<!-- <div class="row">
+
+			<div class="col-1">
+				<div style="text-align: center; font-weight:bolder;"><p id="pressure"></p></div>
+				<div id="gaugepr"></div>
+			</div>
+			<div class="col-1">
+
+			</div>
+            
+		</div> -->
+
+<script>
+
+			$(document).ready(function(){
+
+				var socket = io.connect();
+
+				socket.on('connect', function() {
+					socket.emit('my_event', {data: 'I\'m connected to Client: '});
+				});
+				socket.on('disconnect', function() {
+					$('#log').append('<br>Disconnected');
+				});
+				socket.on('my sensors', function(msg) {
+					$("#deviceid").text("Device ID: " + msg.did);
+					$('#tem').text('Temperature');
+					gaugetem.refresh(parseFloat(msg.tem));
+					$('#hum').text('Humidity');
+					gaugehum.refresh(parseFloat(msg.hum));
+					$('#co2').text('Carbon Dioxide');
+					gaugeco2.refresh(parseFloat(msg.co2));
+					$('#lux').text('Illuminance');
+					gaugelux.refresh(parseFloat(msg.lux));
+					$('#occupancy').text('Occupancy: 1 or 0');
+					gaugeocc.refresh(parseFloat(msg.occ));
+					$('#flowrate').text('Diffuser Velocity');
+					gaugefr.refresh(parseFloat(msg.fr));
+					$('#pressure').text('Diffuser Pressure');
+					gaugepr.refresh(parseFloat(msg.pr));
+				});
+				socket.on('my weather', function(data) {
+					$('#otemp').text(data.otemp);
+                //gaugeotemp.refresh(parseFloat(data.otemp));
+                $('#ohumidity').text(data.ohumidity);
+                //gaugeohumidity.refresh(parseFloat(data.ohumidity));
+                $('#otempmin').text(data.otempmin);
+                //gaugeotempmin.refresh(parseFloat(data.otempmin));
+                $('#otempmax').text(data.otempmax);
+                //gaugeotempmax.refresh(parseFloat(data.otempmax));
+                $('#status').text(data.status);
+                //gaugestatus.refresh(parseFloat(data.status));
+                $('#desc').text(data.desc);
+                //gaugedesc.refresh(parseFloat(data.desc));
+                $('#opressure').text(data.opressure);
+                //gaugeopressure.refresh(parseFloat(data.opressure));
+                $('#ovisibility').text(data.ovisibility);
+                //gaugeovisibility.refresh(parseFloat(data.ovisibility));
+                $('#owindspeed').text(data.owindspeed);
+                //gaugeowindspeed.refresh(parseFloat(data.owindspeed));
+                $('#owinddirection').text(data.owinddirection);
+                //gaugeowinddirection.refresh(parseFloat(data.owinddirection));
+                $('#oclouds').text(data.oclouds);
+                //gaugeoclouds.refresh(parseFloat(data.oclouds));
+            });
+            socket.on('my ahuchiller', function(msg) {
+
+                $('#sat').text('Supply Air Temperature: ' + msg.sat + ' \u00B0C');
+
+                $('#rat').text('Return Air Temperature: ' + msg.rat + ' \u00B0C');
+
+                $('#raco2').text('Return Air CO2 Level: ' + msg.raco2 + ' ppm');
+
+                $('#chwst').text('CHWST: ' + msg.chwst + ' \u00B0C');
+                
+                $('#chwrt').text('CHWRT: ' + msg.chwrt + ' \u00B0C');
+                
+                $('#cwst').text('CWST: ' + msg.cwst + ' \u00B0C');
+                
+                $('#cwrt').text('CWRT: ' + msg.cwrt + ' \u00B0C');
+                
+                $('#chw_flow').text('CHW Flow: ' + msg.chw_flow + ' L/s');
+                
+                $('#cw_flow').text('CW Flow: ' + msg.cw_flow + ' L/s');
+
+                $('#chwp').text('CHW Pump Power: ' + msg.chwp + ' kW');
+                
+                $('#cwp').text('CW Pump Power: ' + msg.cwp + ' kW');
+                
+                $('#fresht').text('Fresh Air Temperature: ' + msg.fresht + ' \u00B0C');
+                
+                $('#ch_pwr').text('Chiller Power: ' + msg.ch_pwr + ' kW');
+
+                $('#ahu_pwr').text('AHU Power: ' + msg.ahu_pwr + ' kW');
+                
+                $('#cooling_load').text('Cooling Load: ' + msg.cooling_load + ' kW');
+                
+                $('#sap').text('Supply Air Pressure: ' + msg.sap + ' Pa');
+                
+                $('#ct_pwr').text('Cooling Tower Power: ' + msg.ct_pwr + ' kW');
+                
+            });
+            // ;
+            // socket.on('my resp', function(msg) {
+
+            //     $('#mess').text('Test Message: ' + msg.data);
+            var gaugetem = new JustGage({
+            id: "gaugetem", // the id of the html element
+            value: 25.0,
+            min: 20.0,
+            max: 27.0,
+            symbol: " \u00B0C",
+            decimals: 1,
+            gaugeWidthScale: 0.3
+        });
+            var gaugehum = new JustGage({
+            id: "gaugehum", // the id of the html element
+            value: 70.0,
+            min: 0.0,
+            max: 100.0,
+            symbol: ' %',
+            decimals: 1,
+            gaugeWidthScale: 0.3
+        });
+            var gaugeco2 = new JustGage({
+            id: "gaugeco2", // the id of the html element
+            value: 400,
+            min: 400,
+            max: 1500,
+            symbol: ' ppm',
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+            var gaugelux = new JustGage({
+            id: "gaugelux", // the id of the html element
+            value: 0,
+            min: 0,
+            max: 1500,
+            symbol: ' lux',
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+            var gaugeocc = new JustGage({
+            id: "gaugeocc", // the id of the html element
+            value: 0,
+            min: 0,
+            max: 1,
+            decimals: 0,
+            gaugeWidthScale: 0.3
+        });
+            var gaugefr = new JustGage({
+            id: "gaugefr", // the id of the html element
+            value: 0.0,
+            min: 0.0,
+            max: 3.3,
+            symbol: ' m/s',
+            decimals: 3,
+            gaugeWidthScale: 0.3
+        });
+            var gaugepr = new JustGage({
+            id: "gaugepr", // the id of the html element
+            value: 0.0,
+            min: 0.0,
+            max: 5.0,
+            symbol: ' Pa',
+            decimals: 3,
+            gaugeWidthScale: 0.3
+        })
+
+            // })
+
+    // $(document).ready(function() {
+    //   	var socket = io.connect('http://' + document.domain + ':' + location.port);
+    //   	socket.on('connect', function() {
+    //       socket.emit('my event', {data: 'I\'m connected!'});
+    //   	});
+
+    //   	socket.on('my response', function(msg) {
+    //       $('#temperature').text("jjskskdl").html();
+    
+
+
+
+    //   	});
+});
+
+var today = new Date();
+
+var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+
+var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+var dateTime = date+' '+time;
+
+document.getElementById("p1").innerHTML = dateTime;
+
+</script>
+
+<script>
+	var slider = document.getElementById("myRange");
+	var output = document.getElementById("demo");
+	output.innerHTML = slider.value;
+
+	slider.oninput = function() {
+		output.innerHTML = this.value;
+	}
+</script>
+
+<script>
+	var sliderC = document.getElementById("myRangeC");
+	var outputC = document.getElementById("demoC");
+	outputC.innerHTML = sliderC.value;
+
+	sliderC.oninput = function() {
+		outputC.innerHTML = this.value;
+	}
+</script>
+
+<script>
+
+	var packeddates;
+
+	$(function() {
+
+  //var selectedFirst = '2020-11-28';
+  
+  //var selectedLast = '2020-11-30';
+  
+  $.datepick.regionalOptions['sg'];
+
+  today = new Date();
+  var selectedFirst = today.getDate();
+  //$('#getSetInlinePicker').datepick({rangeSelect: true, minDate: selectedFirst, maxDate: selectedLast});
+  //$('#getSetInlinePicker').datepicker({defaultDate: selectedFirst});
+  $('#getSetInlinePicker').datepick({dateFormat: 'yyyy-mm-dd', multiSelect: 31, showTrigger: '#calImg'});
+
+
+  $('#getDates').click(function() {
+  	var dates = $('#getSetInlinePicker').datepick('getDate');
+  	var value = '';
+  	for (var i = 0; i < dates.length; i++) {
+  		value += (i == 0 ? '' : ',') + $.datepick.formatDate('yyyy-mm-dd', dates[i]);   
+  	} 
+  	packeddates = $('#getSetValue').val(value || 'none');
+  });
+
+  $('#setDates').click(function() {
+  	var dates = $('#getSetValue').val().split(',');
+  	$('#getSetInlinePicker').datepick('setDate', dates);
+
+  });
+
+  $('#clearDate').click(function() {
+  	$('#getSetValue').val(null);
+  	$('#getSetInlinePicker').datepick('setDate', null);
+  });
+
+});
+
+//function doWork() {
+  // ajax the JSON to the server
+  //$.post("gen_report", packeddates, function(){
+
+  //})};
+</script>
+
+
+
+</body>
+
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html land="en">
+<head>
+<meta charset="utf-8">
+<!-- <meta name="generator" content="Quick 'n Easy Web Builder - http://www.quickandeasywebbuilder.com"> -->
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dashboard: Smart Controller for Centralized Air-Conditioning</title>
+<script type="text/javascript" src="//code.jquery.com/jquery-2.1.4.min.js"></script>
+<!-- <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.4/socket.io.slim.js"></script> -->
+<script src="https://cdn.socket.io/socket.io-3.0.1.min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.4/raphael-min.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/justgage/1.2.9/justgage.min.js"></script>
+<script src='https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.min.js'></script>       
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+<script src="//code.jquery.com/jquery-1.10.2.js"></script>
+<script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+<link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet'>
+<script type="text/javascript" charset="utf-8"></script>
+
+<style>
+body
+{
+   background-color: #FFFFFF;
+   color: #000000;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 1.1875;
+   margin: 0;
+   padding: 0;
+}
+</style>
+
+<style>
+body {
+    font-family:'Montserrat'; font-size:12px;
+}
+hr {
+  border: 1px solid black;
+  
+}
+hr.new1 {
+  border: 1px dotted black;
+}
+/*a
+{
+   color: #0000FF;
+   text-decoration: underline;
+}
+a:visited
+{
+   color: #800080;
+}
+a:active
+{
+   color: #FF0000;
+}
+a:hover
+{
+   color: #0000FF;
+   text-decoration: underline;
+}*/
+#Image1
+{
+   border: 0px solid #000000;
+   padding: 0px 0px 0px 0px;
+   margin: 0;
+   left: 0;
+   top: 0;
+   width: 100%;
+   height: 100%;
+}
+#Editbox1
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox1:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox2
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox2:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox3
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox3:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox4
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox4:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox5
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 19px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox5:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox6
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox6:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox7
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox7:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox8
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox8:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox9
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 19px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox9:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox10
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox10:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox11
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox11:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox12
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox12:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox13
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox13:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#Editbox14
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox14:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+#wb_Heading1
+{
+   background-color: #FFFFFF;
+   background-image: none;
+   border: 0px solid #000000;
+   margin: 0;
+   padding: 0px 0px 0px 0px;
+}
+#Heading1
+{
+   color: #000000;
+   font-family: Montserrat;
+   font-weight: normal;
+   font-size: 29px;
+   margin: 0;
+   text-align: center;
+}
+#wb_Heading2
+{
+   background-color: #FFFFFF;
+   background-image: none;
+   border: 0px solid #000000;
+   margin: 0;
+   padding: 0px 0px 0px 0px;
+}
+#Heading2
+{
+   color: #000000;
+   font-family: Montserrat;
+   font-weight: normal;
+   font-size: 29px;
+   margin: 0;
+   text-align: left;
+}
+#Editbox15
+{
+   border: 1px solid #CCCCCC;
+   border-radius: 4px;
+   background-color: #000000;
+   background-image: none;
+   color :#FFFFFF;
+   font-family: Arial;
+   font-weight: normal;
+   font-size: 13px;
+   line-height: 12px;
+   padding: 4px 4px 4px 4px;
+   margin: 0;
+   text-align: center;
+}
+#Editbox15:focus
+{
+   border-color: #66AFE9;
+   -webkit-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   -moz-box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   box-shadow: inset 0px 1px 1px rgba(0,0,0,0.075), 0px 0px 8px rgba(102, 175, 233, 0.60);
+   outline: 0;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<br>
+  <h3>Dashboard: AHU and Chiller</h3>
+  <!--<div class="btn-group">-->
+  <a href="{{ url_for('index') }}" class="btn btn-dark" type="button">Home</a>
+  <!--<a href="{{ url_for('set_temp') }}" class="btn btn-success" type="button">Set Your Room's Temperature</a>-->
+  <!--<a href="{{ url_for('set_comfort') }}" class="btn btn-danger" type="button">Set Your Comfort Level</a>-->
+  <!--<a href="{{ url_for('check_data') }}" class="btn btn-primary" type="button">Check Your Environment's Data</a>-->
+  <a href="{{ url_for('ahu_and_chiller') }}" class="btn btn-dark" type="button">AHU and Chiller</a>
+  <!--</div>-->
+  <hr>
+  
+
+<div class="col-md-6 text-center"> 
+
+<div id="wb_Image1" style="position:absolute;left:76px;top:128px;width:863px;height:485px;z-index:0;">
+<img src="static/img/chiller.jpg" id="Image1" alt=""></div>
+<!-- <div style="position:absolute;left:380px;top:420px;width:108px;height:28px;"><p style="font-size:12pt" id="sat"></p></div> -->
+<p id="cw_flow" style="position:absolute;left:380px;top:423px;width:138px;height:28px;z-index:1;"></p>
+<p id="chwrt" style="position:absolute;left:570px;top:376px;width:75px;height:28px;z-index:2;"></p>
+<p id="chwst" style="position:absolute;left:692px;top:383px;width:72px;height:28px;z-index:3;"></p>
+<p id="chw_flow" style="position:absolute;left:349px;top:616px;width:138px;height:28px;z-index:4;"></p>
+<p id="ch_pwr" style="position:absolute;left:327px;top:15px;width:158px;height:28px;z-index:5;"></p>
+<p id="ahu_pwr" style="position:absolute;left:522px;top:15px;width:158px;height:28px;z-index:5;"></p>
+<p id="cooling_load" style="position:absolute;left:127px;top:15px;width:158px;height:28px;z-index:5;"></p>
+<p id="cwrt" style="position:absolute;left:561px;top:422px;width:72px;height:28px;z-index:6;"></p>
+<p id="cwp" style="position:absolute;left:75px;top:470px;width:108px;height:28px;z-index:7;"></p>
+<p id="chwp" style="position:absolute;left:70px;top:516px;width:128px;height:28px;z-index:8;"></p>
+<p id="ct_pwr" style="position:absolute;left:260px;top:160px;width:108px;height:28px;z-index:9;"></p>
+<p id="cwst" style="position:absolute;left:258px;top:423px;width:108px;height:28px;z-index:10;"></p>
+<p id="fresht" style="position:absolute;left:440px;top:252px;width:108px;height:28px;z-index:11;"></p>
+<p id="rat" style="position:absolute;left:816px;top:159px;width:108px;height:28px;z-index:12;"></p>
+<p id="sat" style="position:absolute;left:837px;top:273px;width:108px;height:28px;z-index:13;"></p>
+<p id="raco2" style="position:absolute;left:725px;top:228px;width:128px;height:28px;z-index:14;"></p>
+<div id="wb_Heading1" style="position:absolute;left:520px;top:88px;width:322px;height:41px;text-align:center;z-index:15;">
+<h1 id="Heading1">Level B1, Section 2</h1></div>
+<div id="wb_Heading2" style="position:absolute;left:54px;top:85px;width:389px;height:42px;z-index:16;">
+<h1 id="Heading2">Block S1, Cooling Tower 1</h1></div>
+<p id="sap" style="position:absolute;left:710px;top:334px;width:106px;height:28px;z-index:17;"></p>
+<p style="position:absolute; left:56px; top:690px; width:805px; height:28px; z-index:17;">*This is a mock display based on data from previous projects. Chiller and AHU data are normally provided by HVAC vendors.</p>
+</div>
+</div>
+<script>
+
+        $(document).ready(function(){
+
+            var socket = io.connect();
+            
+            socket.on('connect', function() {
+                socket.emit('my_event', {data: 'I\'m connected to Client: '});
+            });
+            socket.on('disconnect', function() {
+                $('#log').append('<br>Disconnected');
+            });
+            socket.on('my ahuchiller', function(msg) {
+
+                $('#sat').text('Supply Air Temperature: ' + msg.sat + ' \u00B0C');
+
+                $('#rat').text('Return Air Temperature: ' + msg.rat + ' \u00B0C');
+
+                $('#raco2').text('Return Air CO2 Level: ' + msg.raco2 + ' ppm');
+
+                $('#chwst').text('CHWST: ' + msg.chwst + ' \u00B0C');
+                
+                $('#chwrt').text('CHWRT: ' + msg.chwrt + ' \u00B0C');
+                
+                $('#cwst').text('CWST: ' + msg.cwst + ' \u00B0C');
+                
+                $('#cwrt').text('CWRT: ' + msg.cwrt + ' \u00B0C');
+                
+                $('#chw_flow').text('CHW Flow: ' + msg.chw_flow + ' L/s');
+                
+                $('#cw_flow').text('CW Flow: ' + msg.cw_flow + ' L/s');
+
+                $('#chwp').text('CHW Pump Power: ' + msg.chwp + ' kW');
+                
+                $('#cwp').text('CW Pump Power: ' + msg.cwp + ' kW');
+                
+                $('#fresht').text('Fresh Air Temperature: ' + msg.fresht + ' \u00B0C');
+                
+                $('#ch_pwr').text('Chiller Power: ' + msg.ch_pwr + ' kW');
+
+                $('#ahu_pwr').text('AHU Power: ' + msg.ahu_pwr + ' kW');
+                
+                $('#cooling_load').text('Cooling Load: ' + msg.cooling_load + ' kW');
+                
+                $('#sap').text('Supply Air Pressure: ' + msg.sap + ' Pa');
+                
+                $('#ct_pwr').text('Cooling Tower Power: ' + msg.ct_pwr + ' kW');
+                
+            })
+            })
+         </script>
+</body>
+</html>
